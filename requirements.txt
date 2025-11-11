@@ -1,0 +1,3 @@
+slack-bolt
+httpx
+python-dotenv

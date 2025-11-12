@@ -15,11 +15,11 @@ logger = logging.getLogger(__name__)
 
 # --- 1. SET UP YOUR TOKENS ---
 # It's best practice to set these as environment variables
-# export SLACK_BOT_TOKEN="xoxb-..."
+# export SLACK_BOT_USER_OAUTH_TOKEN="xoxb-..."
 # export SLACK_APP_TOKEN="xapp-..."
 
-SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_USER_OAUTH_TOKEN", "")
 SLACK_APP_TOKEN = os.environ.get("SLACK_APP_LEVEL_TOKEN", "")
+SLACK_BOT_USER_OAUTH_TOKEN = os.environ.get("SLACK_BOT_USER_OAUTH_TOKEN", "")
 SLACK_SIGNING_SECRET = os.environ.get("SLACK_SIGNING_SECRET", "")
 
 # --- 2. INITIALIZE THE APPS ---
@@ -27,7 +27,7 @@ SLACK_SIGNING_SECRET = os.environ.get("SLACK_SIGNING_SECRET", "")
 api = FastAPI(title="Slack RAG Bot")
 
 # Initialize Slack Bolt app
-slack_app = App(token=SLACK_BOT_TOKEN, signing_secret=SLACK_SIGNING_SECRET)
+slack_app = App(token=SLACK_BOT_USER_OAUTH_TOKEN, signing_secret=SLACK_SIGNING_SECRET)
 
 # Initialize Slack request handler
 handler = SlackRequestHandler(slack_app)
@@ -178,7 +178,7 @@ if __name__ == "__main__":
 
     # Verify required environment variables
     required_vars = [
-        "SLACK_BOT_TOKEN",
+        "SLACK_BOT_USER_OAUTH_TOKEN",
         "SLACK_SIGNING_SECRET",
         "RAG_API_ENDPOINT"
     ]
@@ -192,6 +192,6 @@ if __name__ == "__main__":
     uvicorn.run(
         api,
         host="0.0.0.0",
-        port=int(os.environ.get("PORT", 3000)),
+        port=int(os.environ.get("PORT", 8080)),
         log_level="info"
     )
